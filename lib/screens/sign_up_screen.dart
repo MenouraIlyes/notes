@@ -106,7 +106,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 30),
             Center(
               child: GestureDetector(
-                onTap: Navigator.of(context).pop,
+                onTap: () {
+                  // Go back
+                },
                 child: Text(
                   "Go Back",
                   style: TextStyle(

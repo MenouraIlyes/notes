@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
+import 'package:notes/screens/add_notes_screen.dart';
 import 'package:notes/shared/colors.dart';
 import 'package:notes/widgets/custom_note_card.dart';
 import 'package:notes/widgets/custom_search_field.dart';
@@ -15,7 +16,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
+  // Motion tab controller
   MotionTabBarController? _motionTabBarController;
+  // isFavorite
+  bool isFavorite = false;
 
   @override
   void initState() {
@@ -118,7 +122,13 @@ class _HomeScreenState extends State<HomeScreen>
                   title: "Bootcamp",
                   content: "This is a note example for the mobile app bootcamp",
                   timestamp: "20/02/2025",
-                  onFavoritePressed: () {},
+                  isFavorite: isFavorite,
+                  onFavoritePressed: () {
+                    setState(() {
+                      isFavorite = !isFavorite;
+                      print(isFavorite);
+                    });
+                  },
                 ),
               ],
             ),
@@ -141,17 +151,17 @@ class _HomeScreenState extends State<HomeScreen>
         controller: _motionTabBarController,
         children: [
           getBody(), // Home ( notebooks )
-          Center(child: Text("Add New Notes Page")), // Add
           Center(child: Text("Favorites Page")), // Favorites
+          Center(child: Text("Profile Page")), // Profile
         ],
       ),
       bottomNavigationBar: MotionTabBar(
         controller: _motionTabBarController,
-        labels: ["Notebooks", "Add", "Favorites"],
+        labels: ["Notebooks", "Favorites", "Profile"],
         initialSelectedTab: "Notebooks",
         tabIconColor: Colors.grey,
         tabSelectedColor: appPrimary,
-        icons: [Icons.home, Icons.add, Icons.favorite],
+        icons: [Icons.home, Icons.favorite, Icons.person],
         textStyle: TextStyle(color: appPrimary, fontWeight: FontWeight.bold),
         onTabItemSelected: (int index) {
           setState(() {

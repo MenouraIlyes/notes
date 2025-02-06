@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notes/screens/sign_up_screen.dart';
 import 'package:notes/shared/colors.dart';
 import 'package:notes/widgets/custom_button.dart';
 import 'package:notes/widgets/custom_heading.dart';
@@ -77,7 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
             CustomButton(
               title: 'Login',
               color: appPrimary,
-              onTap: () {},
+              onTap: () {
+                // Navigate to the home screen (push and remove untill)
+              },
             ),
 
             // divider
@@ -155,11 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpScreen(),
-                          ));
+                      // Navigate to sign up screen
                     },
                     child: Text(
                       "Sign-Up",
