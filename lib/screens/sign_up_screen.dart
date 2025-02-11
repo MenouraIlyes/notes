@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes/screens/home_screen.dart';
+import 'package:notes/services/authentification.dart';
 import 'package:notes/shared/colors.dart';
 import 'package:notes/widgets/custom_button.dart';
 import 'package:notes/widgets/custom_heading.dart';
@@ -21,6 +24,67 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String passwordText = "";
   String confirmPasswordText = "";
   bool isLoading = false;
+
+  void register() async {
+    // auth service
+    final authService = AuthService();
+
+    // loading is true
+    setState(() {
+      isLoading = true;
+    });
+
+    // try register
+    if (_passwordController.text == _confirmPasswordController.text) {
+      // Yes, password match
+      try {
+        User? user = await authService.registerWithEmail(
+          _emailController.text,
+          _passwordController.text,
+        );
+
+        if (user != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Please check your credentials',
+                style: TextStyle(color: appWhite, fontWeight: FontWeight.bold),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(e.toString()),
+          ),
+        );
+      }
+    } else {
+      // password doesn't match
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Le mot de passe ne correspond pas',
+            style: TextStyle(color: appWhite, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
+    // end loading
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   Widget getBody() {
     return SingleChildScrollView(
@@ -101,13 +165,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             CustomButton(
               title: "Sign Up",
               color: appPrimary,
-              onTap: () {},
+              onTap: () {
+                register();
+              },
             ),
             const SizedBox(height: 30),
             Center(
               child: GestureDetector(
                 onTap: () {
                   // Go back
+                  Navigator.of(context).pop();
                 },
                 child: Text(
                   "Go Back",

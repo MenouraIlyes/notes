@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes/screens/home_screen.dart';
+import 'package:notes/screens/sign_up_screen.dart';
+import 'package:notes/services/authentification.dart';
 import 'package:notes/shared/colors.dart';
 import 'package:notes/widgets/custom_button.dart';
 import 'package:notes/widgets/custom_heading.dart';
@@ -19,6 +23,54 @@ class _LoginScreenState extends State<LoginScreen> {
   String passwordText = "";
   bool isLoading = false;
   bool isGoogleSigningIn = false;
+
+  // login method
+  void login() async {
+    final authService = AuthService();
+
+    setState(() {
+      isLoading = true;
+    });
+
+    // try login
+    try {
+      // Perform login and get the result
+      User? user = await authService.signInWithEmail(
+          _emailController.text, _passwordController.text);
+
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Login failed, please check your credentials',
+              style: TextStyle(color: appWhite, fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.toString(),
+            style: TextStyle(color: appWhite, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   Widget getBody() {
     return SingleChildScrollView(
@@ -77,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
               title: 'Login',
               color: appPrimary,
               onTap: () {
-                // Navigate to the home screen (push and remove untill)
+                login();
               },
             ),
 
@@ -157,6 +209,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   GestureDetector(
                     onTap: () {
                       // Navigate to sign up screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpScreen(),
+                        ),
+                      );
                     },
                     child: Text(
                       "Sign-Up",

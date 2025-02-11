@@ -1,0 +1,10 @@
+flutter_native_splash:
+  image: "assets/images/notes-logo-splash.png"
+  color: "#ffffff"
+
+  android_12:
+    image: "assets/images/notes-logo-splash.png"
+    
+  android: true
+  ios: true
+
