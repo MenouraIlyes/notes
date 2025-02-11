@@ -77,7 +77,7 @@ class _CustomNoteCardState extends State<CustomNoteCard> {
                 fontSize: 14,
                 color: Colors.black54,
               ),
-              maxLines: 3,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AddNoteScreen extends StatefulWidget {
-  final Function(String title, String content, String? imageUrl) onSave;
+  final Function(
+    String title,
+    String content,
+  ) onSave;
 
   const AddNoteScreen({super.key, required this.onSave});
 
@@ -13,13 +16,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
-  final _imageUrlController = TextEditingController();
 
   @override
   void dispose() {
     _titleController.dispose();
     _contentController.dispose();
-    _imageUrlController.dispose();
     super.dispose();
   }
 
@@ -27,10 +28,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     if (_formKey.currentState!.validate()) {
       final title = _titleController.text;
       final content = _contentController.text;
-      final imageUrl =
-          _imageUrlController.text.isEmpty ? null : _imageUrlController.text;
 
-      widget.onSave(title, content, imageUrl);
+      widget.onSave(title, content);
 
       // Optionally, navigate back after saving
       Navigator.pop(context);
@@ -82,14 +81,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   }
                   return null;
                 },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _imageUrlController,
-                decoration: const InputDecoration(
-                  labelText: 'Image URL (optional)',
-                  border: OutlineInputBorder(),
-                ),
               ),
               const SizedBox(height: 24),
               ElevatedButton(

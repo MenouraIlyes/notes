@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
+import 'package:notes/screens/add_notes_screen.dart';
 import 'package:notes/shared/colors.dart';
 import 'package:notes/widgets/custom_note_card.dart';
 import 'package:notes/widgets/custom_search_field.dart';
@@ -118,7 +119,8 @@ class _HomeScreenState extends State<HomeScreen>
                 // note card
                 CustomNoteCard(
                   title: 'Bootcamp',
-                  content: 'This is an example of a note app',
+                  content:
+                      'This is an example of a note app aijipajtpiaejtpojaeojtaejtpiajetpiajeptijiôaitôetiôaeitôaeitôaeitôiaôtiâoietôaietôiaêoitâoie',
                   onFavoritePressed: () {},
                   timestamp: '06/02/2025',
                 ),
@@ -149,6 +151,19 @@ class _HomeScreenState extends State<HomeScreen>
         elevation: 0,
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddNoteScreen(
+                onSave: (title, content) {},
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
       ),
       body: TabBarView(
         controller: _motionTabBarController,

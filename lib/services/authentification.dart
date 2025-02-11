@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   // Email sign in
@@ -48,5 +49,47 @@ class AuthService {
     } catch (e) {
       print("Error signing out: $e");
     }
+  }
+
+  // Google sing in
+  Future<User?> signInWithGoogle() async {
+    try {
+      // Begin interactive sign in process
+      final GoogleSignInAccount? gUser = await GoogleSignIn(
+        scopes: ["profile", "email"],
+      ).signIn();
+
+      if (gUser == null) {
+        // The user canceled the sign-in
+        return null;
+      }
+
+      // Obtain auth details from request
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
+
+      // Create a new credential for user
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
+
+      // Finally, sign in
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      return userCredential.user;
+    } catch (e) {
+      print('Error during the google sign in :${e.toString()}');
+      return null;
+    }
+  }
+
+  // check if the user exists
+  Future<bool> isNewUser(User user) async {
+    // Check if user is newly created based on creation time
+    DateTime? creationTime = user.metadata.creationTime;
+    final now = DateTime.now();
+    final differenceInMinutes = now.difference(creationTime!).inMinutes;
+    return differenceInMinutes < 0.1; // Adjust threshold as needed
   }
 }

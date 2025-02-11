@@ -245,15 +245,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: Stack(children: [
         getBody(),
-        if (isGoogleSigningIn)
-          Container(
-            color: Colors.black.withOpacity(0.5),
-            child: Center(
-              child: CircularProgressIndicator(
-                color: appPrimary,
-              ),
-            ),
-          ),
         if (isLoading)
           Container(
             color: Colors.black.withOpacity(0.5),
